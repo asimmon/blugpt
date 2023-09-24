@@ -1,5 +1,6 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import { Provider } from "next-auth/providers";
+import GoogleProvider from "next-auth/providers/google";
 import AzureADProvider from "next-auth/providers/azure-ad";
 import GitHubProvider from "next-auth/providers/github";
 
@@ -7,6 +8,23 @@ const configureIdentityProvider = () => {
   const providers: Array<Provider> = [];
 
   const adminEmails = process.env.ADMIN_EMAIL_ADDRESS?.split(",").map(email => email.toLowerCase().trim());
+
+  if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
+    providers.push(
+      GoogleProvider({
+        clientId: process.env.GOOGLE_CLIENT_ID!,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+        async profile(profile) {
+          const newProfile = {
+            ...profile,
+            id: profile.sub,
+            isAdmin: true
+          }
+          return newProfile;
+        }
+      })
+    );
+  }
 
   if (process.env.AUTH_GITHUB_ID && process.env.AUTH_GITHUB_SECRET) {
     providers.push(

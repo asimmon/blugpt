@@ -4,15 +4,18 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { ArrowUpCircle, Loader2 } from "lucide-react";
 import { FC, useState } from "react";
-import { ChatType, ConversationStyle } from "../chat-services/models";
+import { ChatModel, ChatType, ConversationStyle } from "../chat-services/models";
 import { ChatStyleSelector } from "./chat-style-selector";
 import { ChatTypeSelector } from "./chat-type-selector";
+import { ChatModelSelector } from "./chat-model-selector";
 interface Prop {
   isUploadingFile: boolean;
   chatType: ChatType;
+  chatModel: ChatModel;
   conversationStyle: ConversationStyle;
   uploadButtonLabel: string;
   onChatTypeChange: (value: ChatType) => void;
+  onChatModelChange: (value: ChatModel) => void;
   onConversationStyleChange: (value: ConversationStyle) => void;
   onFileChange: (file: FormData) => void;
 }
@@ -48,6 +51,16 @@ export const EmptyState: FC<Prop> = (props) => {
           Personalise
         </Typography>
 
+        <div className="flex flex-col gap-2">
+          <p className="text-sm text-muted-foreground">
+            Choose a model
+          </p>
+          <ChatModelSelector
+            chatModel={props.chatModel}
+            onChatModelChange={props.onChatModelChange}
+            disable={false}
+          />
+        </div>
         <div className="flex flex-col gap-2">
           <p className="text-sm text-muted-foreground">
             Choose a conversation style

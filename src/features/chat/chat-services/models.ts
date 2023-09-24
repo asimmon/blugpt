@@ -20,6 +20,7 @@ export type ConversationStyle = "creative" | "balanced" | "precise";
 export type ChatType = "simple" | "data" | "mssql";
 
 export type ChatRole = "system" | "user" | "assistant" | "function";
+export type ChatModel = "gpt-3.5-turbo" | "gpt-4";
 
 export interface ChatThreadModel {
   id: string;
@@ -29,6 +30,7 @@ export interface ChatThreadModel {
   useName: string;
   isDeleted: boolean;
   chatType: ChatType;
+  chatModel: ChatModel;
   conversationStyle: ConversationStyle;
   chatOverFileName: string;
   type: "CHAT_THREAD";
@@ -39,6 +41,7 @@ export interface PromptGPTBody {
   chatType: ChatType;
   conversationStyle: ConversationStyle;
   chatOverFileName: string;
+  chatModel: ChatModel;
 }
 
 export interface PromptGPTProps extends PromptGPTBody {
