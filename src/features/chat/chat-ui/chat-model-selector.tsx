@@ -1,5 +1,5 @@
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FileText, MessageCircle } from "lucide-react";
+import { Zap, Sparkles } from "lucide-react";
 import { FC } from "react";
 import { ChatModel } from "../chat-services/models";
 
@@ -25,14 +25,14 @@ export const ChatModelSelector: FC<Prop> = (props) => {
           className="flex gap-2"
           disabled={props.disable}
         >
-          <MessageCircle size={20} /> GPT-3.5
+          <Zap size={20} /> GPT-3.5
         </TabsTrigger>
         <TabsTrigger
           value="gpt-4"
           className="flex gap-2"
           disabled={props.disable}
         >
-          <FileText size={20} /> GPT-4
+          <Sparkles size={20} /> GPT-4
         </TabsTrigger>
       </TabsList>
     </Tabs>
