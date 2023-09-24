@@ -4,10 +4,11 @@ import GoogleProvider from "next-auth/providers/google";
 import AzureADProvider from "next-auth/providers/azure-ad";
 import GitHubProvider from "next-auth/providers/github";
 
+const adminEmails = process.env.ADMIN_EMAIL_ADDRESS?.split(",").map(email => email.toLowerCase().trim()) || [];
+const userEmails = process.env.USERS_EMAIL_ADDRESS?.split(",").map(email => email.toLowerCase().trim()) || [];
+
 const configureIdentityProvider = () => {
   const providers: Array<Provider> = [];
-
-  const adminEmails = process.env.ADMIN_EMAIL_ADDRESS?.split(",").map(email => email.toLowerCase().trim());
 
   if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
     providers.push(
@@ -18,7 +19,7 @@ const configureIdentityProvider = () => {
           const newProfile = {
             ...profile,
             id: profile.sub,
-            isAdmin: true
+            isAdmin: adminEmails.includes(profile.email.toLowerCase())
           }
           return newProfile;
         }
@@ -34,7 +35,7 @@ const configureIdentityProvider = () => {
         async profile(profile) {
           const newProfile = {
             ...profile,
-            isAdmin: adminEmails?.includes(profile.email.toLowerCase())
+            isAdmin: adminEmails.includes(profile.email.toLowerCase())
           }
           return newProfile;
         }
@@ -58,7 +59,7 @@ const configureIdentityProvider = () => {
             ...profile,
             // throws error without this - unsure of the root cause (https://stackoverflow.com/questions/76244244/profile-id-is-missing-in-google-oauth-profile-response-nextauth)
             id: profile.sub,
-            isAdmin: adminEmails?.includes(profile.email.toLowerCase()) || adminEmails?.includes(profile.preferred_username.toLowerCase())
+            isAdmin: adminEmails.includes(profile.email.toLowerCase()) || adminEmails.includes(profile.preferred_username.toLowerCase())
           }
           return newProfile;
         }
@@ -81,6 +82,13 @@ export const options: NextAuthOptions = {
     async session({session, token, user }) {
       session.user.isAdmin = token.isAdmin as string
       return session
+    },
+    async signIn({ user }) {
+      if (userEmails.length === 1 && userEmails[0] === "*") {
+        return true;
+      }
+  
+      return !!user && !!user.email && userEmails.includes(user.email.toLowerCase());
     }
   },
   session: {
