@@ -177,7 +177,7 @@ export const CreateChatThread = async () => {
     createdAt: new Date(),
     isDeleted: false,
     chatType: "simple",
-    chatModel: "gpt-3.5-turbo",
+    chatModel: "gpt-4",
     conversationStyle: "precise",
     type: CHAT_THREAD_ATTRIBUTE,
     chatOverFileName: ""
