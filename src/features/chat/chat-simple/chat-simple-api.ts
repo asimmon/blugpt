@@ -24,7 +24,6 @@ export const ChatSimple = async (props: PromptGPTProps) => {
 
   const userId = await userHashedId();
 
-  console.log(props.chatModel);
   const chat = new ChatOpenAI({
     temperature: transformConversationStyleToTemperature(
       chatThread.conversationStyle
