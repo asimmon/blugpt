@@ -9,6 +9,7 @@ import { CosmosDBContainer } from "../../common/cosmos";
 import {
   CHAT_THREAD_ATTRIBUTE,
   ChatMessageModel,
+  ChatModel,
   ChatThreadModel,
   ChatType,
   ConversationStyle,
@@ -146,6 +147,7 @@ export const updateChatThreadTitle = async (
   chatThread: ChatThreadModel,
   messages: ChatMessageModel[],
   chatType: ChatType,
+  chatModel: ChatModel,
   conversationStyle: ConversationStyle,
   chatOverFileName: string,
   userMessage: string
@@ -154,6 +156,7 @@ export const updateChatThreadTitle = async (
     const updatedChatThread = await UpsertChatThread({
       ...chatThread,
       chatType: chatType,
+      chatModel: chatModel,
       chatOverFileName: chatOverFileName,
       conversationStyle: conversationStyle,
       name: userMessage.substring(0, 30),
@@ -174,6 +177,7 @@ export const CreateChatThread = async () => {
     createdAt: new Date(),
     isDeleted: false,
     chatType: "simple",
+    chatModel: "gpt-4",
     conversationStyle: "precise",
     type: CHAT_THREAD_ATTRIBUTE,
     chatOverFileName: ""
@@ -185,7 +189,7 @@ export const CreateChatThread = async () => {
 };
 
 export const initAndGuardChatSession = async (props: PromptGPTProps) => {
-  const { messages, id, chatType, conversationStyle, chatOverFileName } = props;
+  const { messages, id, chatType, chatModel, conversationStyle, chatOverFileName } = props;
 
   //last message
   const lastHumanMessage = messages[messages.length - 1];
@@ -197,6 +201,7 @@ export const initAndGuardChatSession = async (props: PromptGPTProps) => {
     currentChatThread,
     chats,
     chatType,
+    chatModel,
     conversationStyle,
     chatOverFileName,
     lastHumanMessage.content

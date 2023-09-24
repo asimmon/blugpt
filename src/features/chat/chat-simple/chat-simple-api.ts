@@ -28,6 +28,7 @@ export const ChatSimple = async (props: PromptGPTProps) => {
     temperature: transformConversationStyleToTemperature(
       chatThread.conversationStyle
     ),
+    modelName: props.chatModel,
     streaming: true,
   });
 

@@ -16,6 +16,7 @@ import {
 } from "../chat-services/chat-document-service";
 import {
   ChatMessageModel,
+  ChatModel,
   ChatThreadModel,
   ChatType,
   ConversationStyle,
@@ -41,6 +42,7 @@ export const ChatUI: FC<Prop> = (props) => {
   const [chatBody, setBody] = useState<PromptGPTBody>({
     id: props.chatThread.id,
     chatType: props.chatThread.chatType,
+    chatModel: props.chatThread.chatModel,
     conversationStyle: props.chatThread.conversationStyle,
     chatOverFileName: props.chatThread.chatOverFileName
   });
@@ -85,6 +87,10 @@ export const ChatUI: FC<Prop> = (props) => {
 
   const onChatTypeChange = (value: ChatType) => {
     setBody((e) => ({ ...e, chatType: value }));
+  };
+
+  const onChatModelChange = (value: ChatModel) => {
+    setBody((e) => ({ ...e, chatModel: value }));
   };
 
   const onConversationStyleChange = (value: ConversationStyle) => {
@@ -176,7 +182,9 @@ export const ChatUI: FC<Prop> = (props) => {
           onFileChange={onFileChange}
           onConversationStyleChange={onConversationStyleChange}
           onChatTypeChange={onChatTypeChange}
+          onChatModelChange={onChatModelChange}
           chatType={chatBody.chatType}
+          chatModel={chatBody.chatModel}
           conversationStyle={chatBody.conversationStyle}
         />
       )}
