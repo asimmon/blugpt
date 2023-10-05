@@ -1,22 +1,21 @@
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Brush, CircleDot, Scale } from "lucide-react";
 import { FC } from "react";
-import { ConversationStyle } from "../chat-services/models";
+import { ConversationStyle } from "../../chat-services/models";
+import { useChatContext } from "../chat-context";
 
 interface Prop {
   disable: boolean;
-  conversationStyle: ConversationStyle;
-  onChatStyleChange?: (value: ConversationStyle) => void;
 }
 
 export const ChatStyleSelector: FC<Prop> = (props) => {
+  const { onConversationStyleChange, chatBody } = useChatContext();
+
   return (
     <Tabs
-      defaultValue={props.conversationStyle}
+      defaultValue={chatBody.conversationStyle}
       onValueChange={(value) =>
-        props.onChatStyleChange
-          ? props.onChatStyleChange(value as ConversationStyle)
-          : null
+        onConversationStyleChange(value as ConversationStyle)
       }
     >
       <TabsList className="grid w-full grid-cols-3 h-12 items-stretch">

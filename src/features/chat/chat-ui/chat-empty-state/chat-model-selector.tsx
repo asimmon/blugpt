@@ -1,22 +1,21 @@
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Zap, Sparkles } from "lucide-react";
 import { FC } from "react";
-import { ChatModel } from "../chat-services/models";
+import { ChatModel } from "../../chat-services/models";
+import { useChatContext } from "../chat-context";
 
 interface Prop {
-  chatModel: ChatModel;
   disable: boolean;
-  onChatModelChange?: (value: ChatModel) => void;
 }
 
 export const ChatModelSelector: FC<Prop> = (props) => {
+  const { onChatModelChange, chatBody } = useChatContext();
+
   return (
     <Tabs
-      defaultValue={props.chatModel}
+      defaultValue={chatBody.chatModel}
       onValueChange={(value) =>
-        props.onChatModelChange
-          ? props.onChatModelChange(value as ChatModel)
-          : null
+        onChatModelChange(value as ChatModel)
       }
     >
       <TabsList className="grid w-full grid-cols-2 h-12 items-stretch">

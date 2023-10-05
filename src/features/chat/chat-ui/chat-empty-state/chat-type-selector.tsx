@@ -1,23 +1,20 @@
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FileText, MessageCircle } from "lucide-react";
 import { FC } from "react";
-import { ChatType } from "../chat-services/models";
+import { ChatType } from "../../chat-services/models";
+import { useChatContext } from "../chat-context";
 
 interface Prop {
-  chatType: ChatType;
   disable: boolean;
-  onChatTypeChange?: (value: ChatType) => void;
 }
 
 export const ChatTypeSelector: FC<Prop> = (props) => {
+  const { chatBody, onChatTypeChange } = useChatContext();
+
   return (
     <Tabs
-      defaultValue={props.chatType}
-      onValueChange={(value) =>
-        props.onChatTypeChange
-          ? props.onChatTypeChange(value as ChatType)
-          : null
-      }
+      defaultValue={chatBody.chatType}
+      onValueChange={(value) => onChatTypeChange(value as ChatType)}
     >
       <TabsList className="grid w-full grid-cols-2 h-12 items-stretch">
         <TabsTrigger
@@ -34,13 +31,6 @@ export const ChatTypeSelector: FC<Prop> = (props) => {
         >
           <FileText size={20} /> File
         </TabsTrigger>
-        {/* <TabsTrigger
-          value="mssql"
-          className="flex gap-2"
-          disabled={props.disable}
-        >
-          <Database size={20} /> Database
-        </TabsTrigger> */}
       </TabsList>
     </Tabs>
   );

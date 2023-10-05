@@ -1,26 +1,22 @@
 import { FC } from "react";
-import { ChatType, ConversationStyle, PromptGPTBody } from "../chat-services/models";
-import { ChatStyleSelector } from "./chat-style-selector";
-import { ChatTypeSelector } from "./chat-type-selector";
-import { ChatModelSelector } from "./chat-model-selector";
+import { useChatContext } from "./chat-context";
+import { ChatStyleSelector } from "./chat-empty-state/chat-style-selector";
+import { ChatTypeSelector } from "./chat-empty-state/chat-type-selector";
+import { ChatModelSelector } from "./chat-empty-state/chat-model-selector";
 
-interface Prop {
-  chatBody: PromptGPTBody;
-}
+interface Prop {}
 
 export const ChatHeader: FC<Prop> = (props) => {
+  const { chatBody } = useChatContext();
   return (
     <div className="flex flex-col gap-2">
       <div className="flex gap-2">
-        <ChatModelSelector disable={true} chatModel={props.chatBody.chatModel} />
-        <ChatTypeSelector disable={true} chatType={props.chatBody.chatType} />
-        <ChatStyleSelector
-          disable={true}
-          conversationStyle={props.chatBody.conversationStyle}
-        />
+        <ChatModelSelector disable={true} />
+        <ChatTypeSelector disable={true} />
+        <ChatStyleSelector disable={true} />
       </div>
       <div className="flex gap-2 h-2">
-        <p className="text-xs">{props.chatBody.chatOverFileName}</p>
+        <p className="text-xs">{chatBody.chatOverFileName}</p>
       </div>
     </div>
   );
