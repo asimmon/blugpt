@@ -11,11 +11,11 @@ import {
   MessagesPlaceholder,
   SystemMessagePromptTemplate,
 } from "langchain/prompts";
-import { initAndGuardChatSession } from "../chat-services/chat-thread-service";
-import { PromptGPTProps } from "../chat-services/models";
-import { transformConversationStyleToTemperature } from "../chat-services/utils";
+import { initAndGuardChatSession } from "./chat-thread-service";
+import { PromptGPTProps } from "./models";
+import { transformConversationStyleToTemperature } from "./utils";
 
-export const ChatSimple = async (props: PromptGPTProps) => {
+export const ChatAPISimple = async (props: PromptGPTProps) => {
   const { lastHumanMessage, id, chatThread } = await initAndGuardChatSession(
     props
   );
@@ -28,7 +28,7 @@ export const ChatSimple = async (props: PromptGPTProps) => {
     temperature: transformConversationStyleToTemperature(
       chatThread.conversationStyle
     ),
-    modelName: props.chatModel,
+    modelName: chatThread.chatModel,
     streaming: true,
   });
 
