@@ -20,7 +20,12 @@ export type ConversationStyle = "creative" | "balanced" | "precise";
 export type ChatType = "simple" | "data" | "mssql";
 
 export type ChatRole = "system" | "user" | "assistant" | "function";
-export type ChatModel = "gpt-3.5-turbo" | "gpt-4";
+export type ChatModel = "gpt-3.5" | "gpt-4";
+
+export const CHAT_MODEL_NAMES: Record<ChatModel, string> = {
+  "gpt-3.5": "gpt-3.5-turbo-1106",
+  "gpt-4": "gpt-4-1106-preview",
+};
 
 export interface ChatThreadModel {
   id: string;

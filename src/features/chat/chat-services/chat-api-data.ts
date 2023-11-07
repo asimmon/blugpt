@@ -5,7 +5,7 @@ import { OpenAIStream, StreamingTextResponse } from "ai";
 import { similaritySearchVectorWithScore } from "./azure-cog-search/azure-cog-vector-store";
 import { initAndGuardChatSession } from "./chat-thread-service";
 import { CosmosDBChatMessageHistory } from "./cosmosdb/cosmosdb";
-import { PromptGPTProps } from "./models";
+import { CHAT_MODEL_NAMES, PromptGPTProps } from "./models";
 
 const SYSTEM_PROMPT = `You are ${AI_NAME} who is a helpful AI Assistant.`;
 
@@ -74,7 +74,7 @@ export const ChatAPIData = async (props: PromptGPTProps) => {
           }),
         },
       ],
-      model: chatThread.chatModel,
+      model: CHAT_MODEL_NAMES[chatThread.chatModel],
       stream: true,
     });
 

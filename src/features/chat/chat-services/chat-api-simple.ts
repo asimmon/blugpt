@@ -4,7 +4,7 @@ import { AI_NAME } from "@/features/theme/customise";
 import { OpenAIStream, StreamingTextResponse } from "ai";
 import { initAndGuardChatSession } from "./chat-thread-service";
 import { CosmosDBChatMessageHistory } from "./cosmosdb/cosmosdb";
-import { PromptGPTProps } from "./models";
+import { CHAT_MODEL_NAMES, PromptGPTProps } from "./models";
 
 export const ChatAPISimple = async (props: PromptGPTProps) => {
   const { lastHumanMessage, chatThread } = await initAndGuardChatSession(props);
@@ -37,7 +37,7 @@ export const ChatAPISimple = async (props: PromptGPTProps) => {
         },
         ...topHistory,
       ],
-      model: chatThread.chatModel,
+      model: CHAT_MODEL_NAMES[chatThread.chatModel],
       stream: true,
     });
 
