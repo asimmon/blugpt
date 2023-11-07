@@ -1,4 +1,3 @@
-import { AzureCogDocument } from "@/features/langchain/vector-stores/azure-cog-search/azure-cog-vector-store";
 import { Message } from "ai";
 
 export const CHAT_DOCUMENT_ATTRIBUTE = "CHAT_DOCUMENT";
@@ -13,6 +12,7 @@ export interface ChatMessageModel {
   userId: string;
   content: string;
   role: ChatRole;
+  context: string;
   type: "CHAT_MESSAGE";
 }
 
@@ -20,7 +20,12 @@ export type ConversationStyle = "creative" | "balanced" | "precise";
 export type ChatType = "simple" | "data" | "mssql";
 
 export type ChatRole = "system" | "user" | "assistant" | "function";
-export type ChatModel = "gpt-3.5-turbo" | "gpt-4";
+export type ChatModel = "gpt-3.5" | "gpt-4";
+
+export const CHAT_MODEL_NAMES: Record<ChatModel, string> = {
+  "gpt-3.5": "gpt-3.5-turbo-1106",
+  "gpt-4": "gpt-4-1106-preview",
+};
 
 export interface ChatThreadModel {
   id: string;
@@ -46,16 +51,6 @@ export interface PromptGPTBody {
 
 export interface PromptGPTProps extends PromptGPTBody {
   messages: Message[];
-}
-
-// document models
-export interface FaqDocumentIndex extends AzureCogDocument {
-  id: string;
-  user: string;
-  chatThreadId: string;
-  embedding: number[];
-  pageContent: string;
-  metadata: any;
 }
 
 export interface ChatDocumentModel {
