@@ -3,9 +3,11 @@ import "server-only";
 
 import { userHashedId, userSession } from "@/features/auth/helpers";
 import { FindAllChats } from "@/features/chat/chat-services/chat-service";
+import { uniqueId } from "@/features/common/util";
 import { SqlQuerySpec } from "@azure/cosmos";
-import { nanoid } from "nanoid";
 import { CosmosDBContainer } from "../../common/cosmos";
+import { deleteDocuments } from "./azure-cog-search/azure-cog-vector-store";
+import { FindAllChatDocuments } from "./chat-document-service";
 import {
   CHAT_THREAD_ATTRIBUTE,
   ChatMessageModel,
@@ -15,7 +17,6 @@ import {
   ConversationStyle,
   PromptGPTProps,
 } from "./models";
-import { FindAllChatDocuments, DeleteDocuments } from "./chat-document-service";
 
 export const FindAllChatThreadForCurrentUser = async () => {
   const container = await CosmosDBContainer.getInstance().getContainer();
@@ -98,7 +99,7 @@ export const SoftDeleteChatThreadByID = async (chatThreadID: string) => {
     const chatDocuments = await FindAllChatDocuments(chatThreadID);
 
     if (chatDocuments.length !== 0) {
-      await DeleteDocuments(chatThreadID);
+      await deleteDocuments(chatThreadID);
     }
 
     chatDocuments.forEach(async (chatDocument) => {
@@ -173,14 +174,14 @@ export const CreateChatThread = async () => {
     name: "new chat",
     useName: (await userSession())!.name,
     userId: await userHashedId(),
-    id: nanoid(),
+    id: uniqueId(),
     createdAt: new Date(),
     isDeleted: false,
     chatType: "simple",
     chatModel: "gpt-4",
     conversationStyle: "precise",
     type: CHAT_THREAD_ATTRIBUTE,
-    chatOverFileName: ""
+    chatOverFileName: "",
   };
 
   const container = await CosmosDBContainer.getInstance().getContainer();
